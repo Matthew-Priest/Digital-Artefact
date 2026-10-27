@@ -1,0 +1,7 @@
+2
+Case Number: 1
+Case Name: errors in launch.json
+Description: launch.json errors on startup. more investigation needed
+Developer: Matthew Priest
+Date Created: 2026-10-27
+
