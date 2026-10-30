@@ -1,10 +1,11 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
+
+//import java.io.BufferedReader;
+//import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 
-public class Case{
+public class Case {
     private String caseName;
     private String caseDescription;
     private int caseNumber;
@@ -12,8 +13,8 @@ public class Case{
     private String Dev;
     private int caseCount = 0;
 
-
-    public Case(String newName, String caseDescription, String Dev){
+    //Constructor Overloading. One for creating an initial case from create method, other for creating a case that has been read from a txt file
+    public Case(String newName, String caseDescription, String Dev) {
         this.caseName = newName;
         this.caseDescription = caseDescription;
         this.Dev = Dev;
@@ -22,7 +23,15 @@ public class Case{
         caseCount += 1;
     }
 
-    public void writeToFile(){
+    public  Case(String caseNum, String caseName, String caseDescription, String Dev, String creationDate){
+        this.caseName = caseName;
+        this.caseDescription = caseDescription;
+        this.Dev = Dev;
+        this.setDate = LocalDate.parse(creationDate);
+        this.caseNumber = Integer.parseInt(caseNum);
+    }
+
+    public void writeToFile() {
         try {
             FileWriter myWriter = new FileWriter("caseList.txt", true);
 
@@ -35,7 +44,7 @@ public class Case{
 
             myWriter.close();
             System.out.println("Successfully wrote the case to the file.");
-            
+
         } catch (IOException e) {
 
             System.out.println("An error occurred.");
@@ -43,19 +52,21 @@ public class Case{
         }
     }
 
-    public static int readCaseCount(){
-        try (BufferedReader reader =
-            new BufferedReader(new FileReader("caseList.txt"))) {
-            String line = reader.readLine();
-            if (line != null) {
-                return Integer.parseInt(line);
-            }
-        } catch (IOException e) {
-            System.out.println("Could not read case count.");
-        }
-        return 1;
-    }
-    public static void main(String[] args) {
-        System.out.println(readCaseCount());
-    }
+    /*
+     * public static int readCaseCount(){
+     * try (BufferedReader reader =
+     * new BufferedReader(new FileReader("caseList.txt"))) {
+     * String line = reader.readLine();
+     * if (line != null) {
+     * return Integer.parseInt(line);
+     * }
+     * } catch (IOException e) {
+     * System.out.println("Could not read case count.");
+     * }
+     * return 1;
+     * }
+     * public static void main(String[] args) {
+     * System.out.println(readCaseCount());
+     * }
+     */
 }
