@@ -1,9 +1,9 @@
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Artefact {
     public static void main(String[] args) {
@@ -12,28 +12,34 @@ public class Artefact {
         System.out.println("This is a case management system");
         String answer = "";
         Scanner scanner = new Scanner(System.in);
-        while (!answer.equals("create") && !answer.equals("edit") && !answer.equals("delete")) {
+
+        while (!answer.equals("breakout")) {
             System.out.println("Would you like to create a case, edit a case, or delete a case?");
+            answer = scanner.nextLine().toLowerCase();
+            switch (answer) {
+                case "create":
+                    createCase(scanner, caseList);
+                    break;
+                case "edit":
+                    editCase(scanner);
+                    break;
+                case "delete":
+                    deleteCase(scanner);
+                    break;
+                default:
+                    break;
+            }
+            System.out.println("Would you like to continue?");
             answer = scanner.nextLine();
-            answer = answer.toLowerCase();
+            if(answer.equals("no")){
+                answer = "breakout";
+            }
         }
-        switch (answer) {
-            case "create":
-                createCase(scanner);
-                break;
-            case "edit":
-                editCase(scanner);
-                break;
-            case "delete":
-                deleteCase(scanner);
-                break;
-            default:
-                break;
-        }
+        pasteCases(caseList);
         scanner.close();
     }
 
-    public static void createCase(Scanner scanner) {
+    public static void createCase(Scanner scanner, ArrayList<Case> caseList) {
         String caseName;
         String caseDescription;
         String Dev;
@@ -48,6 +54,7 @@ public class Artefact {
         Dev = scanner.nextLine();
 
         Case newCase = new Case(caseName, caseDescription, Dev);
+        caseList.add(newCase);
         newCase.writeToFile();
     }
 
@@ -73,10 +80,11 @@ public class Artefact {
                     Case newCase = new Case(fields[0], fields[1], fields[2], fields[3], fields[4]);
                     caseList.add(newCase);
                     count = 0;
+                    fields = new String[5]; //Validation so that if user leaves a box empty, info isn't being reused from past cases
                 }
                 else {
                     int startOfValue = line.indexOf(":");  
-                    if(startOfValue != -1){                 //Validation here in the unlikely case a value doesn't contain a colon
+                    if(startOfValue != -1){                 //Validation here in the case a line doesn't contain a colon
                         fields[count]  = line.substring(startOfValue+ 2);
                         count += 1;
                     } 
@@ -88,7 +96,13 @@ public class Artefact {
         return caseList;
     }
 
-    public static void pasteCases(ArrayList caseList) {
-
+    public static void pasteCases(ArrayList<Case> caseList) {
+        try {
+            new FileWriter("caseList.txt", false).close();
+        } catch (Exception e) {
+        }
+        for(int i=0; i<caseList.size(); i++){
+            caseList.get(i).writeToFile();
+        }
     }
 }

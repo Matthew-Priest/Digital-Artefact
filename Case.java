@@ -11,7 +11,6 @@ public class Case {
     private int caseNumber;
     private LocalDate setDate;
     private String Dev;
-    private int caseCount = 0;
 
     //Constructor Overloading. One for creating an initial case from create method, other for creating a case that has been read from a txt file
     public Case(String newName, String caseDescription, String Dev) {
@@ -19,8 +18,6 @@ public class Case {
         this.caseDescription = caseDescription;
         this.Dev = Dev;
         this.setDate = LocalDate.now();
-        this.caseNumber = (caseCount += 1);
-        caseCount += 1;
     }
 
     public  Case(String caseNum, String caseName, String caseDescription, String Dev, String creationDate){
@@ -31,7 +28,7 @@ public class Case {
         this.caseNumber = Integer.parseInt(caseNum);
     }
 
-    public void writeToFile() {
+    public void writeToFile(){
         try {
             FileWriter myWriter = new FileWriter("caseList.txt", true);
 
@@ -51,22 +48,4 @@ public class Case {
             e.printStackTrace();
         }
     }
-
-    /*
-     * public static int readCaseCount(){
-     * try (BufferedReader reader =
-     * new BufferedReader(new FileReader("caseList.txt"))) {
-     * String line = reader.readLine();
-     * if (line != null) {
-     * return Integer.parseInt(line);
-     * }
-     * } catch (IOException e) {
-     * System.out.println("Could not read case count.");
-     * }
-     * return 1;
-     * }
-     * public static void main(String[] args) {
-     * System.out.println(readCaseCount());
-     * }
-     */
 }
