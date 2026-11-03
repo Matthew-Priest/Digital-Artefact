@@ -76,13 +76,10 @@ public class Artefact {
                 }
                 else {
                     int startOfValue = line.indexOf(":");  
-                    if(startOfValue == -1){                 //Validation here in the unlikely case a value doesn't contain a colon
-                        Value = line;
-                    } else {
-                        Value = line.substring(startOfValue+ 2);
-                    }
-                    fields[count] = Value;
-                    count += 1;
+                    if(startOfValue != -1){                 //Validation here in the unlikely case a value doesn't contain a colon
+                        fields[count]  = line.substring(startOfValue+ 2);
+                        count += 1;
+                    } 
                 }    
             }
         } catch (IOException e) {
