@@ -49,7 +49,7 @@ public class Artefact {
         String caseName;
         String caseDescription;
         String Dev;
-        String status;
+        Status status;
         int highestCaseNum = 0;
 
         for(Case c : caseList) {
@@ -66,8 +66,7 @@ public class Artefact {
         System.out.println("Who will be in charge of the case");
         Dev = scanner.nextLine();
 
-        System.out.println("What is the status of this case?");
-        status = scanner.nextLine();
+        status = Status.active;
 
         Case newCase = new Case(highestCaseNum + 1, caseName, caseDescription, Dev, status);
         caseList.add(newCase);
@@ -76,16 +75,31 @@ public class Artefact {
     public static void editCase(Scanner scanner, ArrayList<Case> caseList) {
         String answer = "";
         Case selectedCase = findCase(scanner, caseList);
+
         if (selectedCase == null) {
             System.out.println("No case found");
             return;
         }
+
         while (!answer.equals("name") && !answer.equals("dev") && !answer.equals("description") && !answer.equals("status")) {
             System.out.println("What part of the case would you like to edit?");
             answer = scanner.nextLine().toLowerCase();
         }
+
+        if(answer.equals("status")){
+            System.out.println("Pick a status from these options");
+            for(Status s : Status.values()){
+                System.out.println();
+            }
+        }
+
         System.out.println("What would you like to change it to");
         String change = scanner.nextLine();
+
+        if(answer.equals("status")){
+            change = change.trim().toLowerCase().replace(" ", "_");
+        }
+
         switch (answer) {
             case "name":
                 selectedCase.setCaseTitle(change);
@@ -97,7 +111,11 @@ public class Artefact {
                 selectedCase.setCaseDev(change);
                 break;
             case "status":
-                selectedCase.setCaseStatus(change);
+                try {
+                    selectedCase.setCaseStatus(Status.valueOf(change));
+                } catch (IllegalArgumentException e) {
+                    System.out.println("That isn't a valid status, so nothing was changed."); //Validation so that program doesn't crash if the input doesn't match a value of Status
+                }
                 break;        
             default:
                 break;
@@ -105,7 +123,7 @@ public class Artefact {
     }
 
     public static void deleteCase(Scanner scanner, ArrayList<Case> caseList) {
-
+        
     }
 
     public static void viewCase(Scanner scanner, ArrayList<Case> caseList){
@@ -127,7 +145,7 @@ public class Artefact {
             String line;
             while ((line = br.readLine()) != null) {
                 if(line.equals("--------------------")){
-                    Case newCase = new Case(fields[0], fields[1], fields[2], fields[3], fields[4], fields[5]);
+                    Case newCase = new Case(fields[0], fields[1], fields[2], fields[3], fields[4], Status.valueOf(fields[5]));
                     caseList.add(newCase);
                     count = 0;
                     fields = new String[6]; //Validation so that if user leaves a box empty, info isn't being reused from past cases
