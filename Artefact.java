@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 public class Artefact {
     public static void main(String[] args) {
-        // HERE WILL LOAD CASES FROM TEXT FILE AND ADD EACH TO AN ARRAYLIST SO THEY CAN BE EDITED, THEN REPRINTED TO FILE BEFORE CLOSING OF PROGRAM
         ArrayList<Case> caseList = LoadCases();       
         System.out.println("This is a case management system");
         String answer = "";
@@ -16,6 +15,7 @@ public class Artefact {
         while (!answer.equals("breakout")) {
             System.out.println("Would you like to create a case, edit a case, delete a case or view a case?");
             answer = scanner.nextLine().toLowerCase();
+
             switch (answer) {
                 case "create":
                     createCase(scanner, caseList);
@@ -32,12 +32,15 @@ public class Artefact {
                 default:
                     break;
             }
+
             System.out.println("Would you like to continue?");
-            answer = scanner.nextLine();
+            answer = scanner.nextLine().toLowerCase();
+
             if(answer.equals("no")){
                 answer = "breakout";
             }
         }
+
         pasteCases(caseList);
         scanner.close();
     }
@@ -73,6 +76,10 @@ public class Artefact {
     public static void editCase(Scanner scanner, ArrayList<Case> caseList) {
         String answer = "";
         Case selectedCase = findCase(scanner, caseList);
+        if (selectedCase == null) {
+            System.out.println("No case found");
+            return;
+        }
         while (!answer.equals("name") && !answer.equals("dev") && !answer.equals("description") && !answer.equals("status")) {
             System.out.println("What part of the case would you like to edit?");
             answer = scanner.nextLine().toLowerCase();
@@ -98,7 +105,7 @@ public class Artefact {
     }
 
     public static void deleteCase(Scanner scanner, ArrayList<Case> caseList) {
-        
+
     }
 
     public static void viewCase(Scanner scanner, ArrayList<Case> caseList){
@@ -151,8 +158,14 @@ public class Artefact {
     }
 
     public static Case findCaseViaNumber(Scanner scanner, ArrayList<Case> caseList){
-        System.out.println("What  case number do you want to look for");
-        int answer = Integer.parseInt(scanner.nextLine());
+        int answer = -1;
+        try {
+            System.out.println("What  case number do you want to look for");
+            answer = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+            System.out.println("Input error");
+        }
+
         for(Case c : caseList){
             if(c.getCaseNumber() == answer){
                 return c;
@@ -163,9 +176,9 @@ public class Artefact {
 
     public static Case findCaseViaTitle(Scanner scanner,  ArrayList<Case> caseList){
         System.out.println("What search phrase do you want to look for in the title?");
-        String answer = scanner.nextLine();
+        String answer = scanner.nextLine().toLowerCase();
         for(Case c : caseList){
-             if(c.getCaseTitle().contains(answer)){
+             if(c.getCaseTitle().toLowerCase().contains(answer)){
                 return c;
             }
         }
