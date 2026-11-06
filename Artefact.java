@@ -14,7 +14,7 @@ public class Artefact {
         Scanner scanner = new Scanner(System.in);
 
         while (!answer.equals("breakout")) {
-            System.out.println("Would you like to create a case, edit a case, or delete a case?");
+            System.out.println("Would you like to create a case, edit a case, delete a case or view a case?");
             answer = scanner.nextLine().toLowerCase();
             switch (answer) {
                 case "create":
@@ -25,6 +25,9 @@ public class Artefact {
                     break;
                 case "delete":
                     deleteCase(scanner, caseList);
+                    break;
+                case "view":
+                    viewCase(scanner, caseList);
                     break;
                 default:
                     break;
@@ -68,29 +71,42 @@ public class Artefact {
     }
 
     public static void editCase(Scanner scanner, ArrayList<Case> caseList) {
-        System.out.println("Would you like to find your case through the case number or title");
-        String answer = scanner.nextLine().toLowerCase();
-        switch (answer) {
-            case "case number":
-                findCaseViaNumber(scanner, caseList);
-                break;
-            case "title":
-                findCaseViaTitle(scanner, caseList);
-                break;
-            default:
-                break;
-        }
-        answer = "";
-        while (!answer.equals("name") && !answer.equals("dev") && !answer.equals("description")) {
+        String answer = "";
+        Case selectedCase = findCase(scanner, caseList);
+        while (!answer.equals("name") && !answer.equals("dev") && !answer.equals("description") && !answer.equals("status")) {
             System.out.println("What part of the case would you like to edit?");
             answer = scanner.nextLine().toLowerCase();
         }
-        
-
+        System.out.println("What would you like to change it to");
+        String change = scanner.nextLine();
+        switch (answer) {
+            case "name":
+                selectedCase.setCaseTitle(change);
+                break;
+            case "description":
+                selectedCase.setCaseDescription(change);
+                break;
+            case "dev":
+                selectedCase.setCaseDev(change);
+                break;
+            case "status":
+                selectedCase.setCaseStatus(change);
+                break;        
+            default:
+                break;
+        }
     }
 
     public static void deleteCase(Scanner scanner, ArrayList<Case> caseList) {
+        
+    }
 
+    public static void viewCase(Scanner scanner, ArrayList<Case> caseList){
+        Case selectedCase = findCase(scanner, caseList);
+        if(selectedCase == null){
+            System.out.println("No case found");
+        }
+        System.out.println(selectedCase);
     }
 
     public static ArrayList<Case> LoadCases() {
@@ -133,8 +149,9 @@ public class Artefact {
         }
         System.out.println("Successfully saved "+ caseList.size() +" cases");
     }
+
     public static Case findCaseViaNumber(Scanner scanner, ArrayList<Case> caseList){
-        System.out.println("What search phrase do you want to look for in the title?");
+        System.out.println("What  case number do you want to look for");
         int answer = Integer.parseInt(scanner.nextLine());
         for(Case c : caseList){
             if(c.getCaseNumber() == answer){
@@ -143,6 +160,7 @@ public class Artefact {
         }
         return null;
     }
+
     public static Case findCaseViaTitle(Scanner scanner,  ArrayList<Case> caseList){
         System.out.println("What search phrase do you want to look for in the title?");
         String answer = scanner.nextLine();
@@ -153,4 +171,26 @@ public class Artefact {
         }
         return null;
     }
+
+    public static Case findCase(Scanner scanner,  ArrayList<Case> caseList){
+        System.out.println("Would you like to find your case through the case number or title");
+        String answer = scanner.nextLine().toLowerCase();
+        Case c;
+        switch (answer) {
+            case "case number":
+                c = findCaseViaNumber(scanner, caseList);
+                break;
+            case "number":
+                c = findCaseViaNumber(scanner, caseList);
+                break;            
+            case "title":
+                c = findCaseViaTitle(scanner, caseList);
+                break;
+            default:
+                c = null;
+                break;
+        }
+        return c;
+    }
+
 }

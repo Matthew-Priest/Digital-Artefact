@@ -31,6 +31,15 @@ public class Case {
         this.status = status;
         this.caseNumber = Integer.parseInt(caseNum);
     }
+    @Override
+    public String toString() {
+    return "Case Number: " + caseNumber + "\n"
+         + "Title: " + caseName + "\n"
+         + "Description: " + caseDescription + "\n"
+         + "Developer: " + Dev + "\n"
+         + "Date Created: " + setDate + "\n"
+         + "Status: " + status;
+}
 
     public void writeToFile(){
         try {
@@ -55,8 +64,20 @@ public class Case {
     public int getCaseNumber() {
         return caseNumber;
     }
-    public String getCaseTitle(){
+    public String getCaseTitle() {
         return caseName;
+    }
+    public void setCaseTitle(String title){
+        this.caseName = title;
+    }
+    public void setCaseDescription(String description){
+        this.caseDescription = description;
+    }
+    public void setCaseStatus(String status){
+        this.status = status;
+    }
+    public void setCaseDev(String dev){
+        this.Dev = dev;
     }
 
 }
