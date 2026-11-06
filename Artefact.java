@@ -13,7 +13,7 @@ public class Artefact {
         Scanner scanner = new Scanner(System.in);
 
         while (!answer.equals("breakout")) {
-            System.out.println("Would you like to create a case, edit a case, delete a case or view a case?");
+            System.out.println("Would you like to create a case, edit a case, close a case or view a case?");
             answer = scanner.nextLine().toLowerCase();
 
             switch (answer) {
@@ -23,8 +23,8 @@ public class Artefact {
                 case "edit":
                     editCase(scanner, caseList);
                     break;
-                case "delete":
-                    deleteCase(scanner, caseList);
+                case "close":
+                    closeCase(scanner, caseList);
                     break;
                 case "view":
                     viewCase(scanner, caseList);
@@ -122,7 +122,9 @@ public class Artefact {
         }
     }
 
-    public static void deleteCase(Scanner scanner, ArrayList<Case> caseList) {
+    public static void closeCase(Scanner scanner, ArrayList<Case> caseList) {
+        Case selectedCase = findCase(scanner, caseList);
+        selectedCase.setCaseStatus(Status.closed);
         
     }
 

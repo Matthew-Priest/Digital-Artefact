@@ -4,4 +4,5 @@ public enum Status {
     ready_for_testing,
     in_testing,
     testing_complete,
+    closed
 }
