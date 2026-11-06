@@ -13,7 +13,8 @@ public class Case {
     private String Dev;
 
     //Constructor Overloading. One for creating an initial case from create method, other for creating a case that has been read from a txt file
-    public Case(String newName, String caseDescription, String Dev) {
+    public Case(int caseNumber, String newName, String caseDescription, String Dev) {
+        this.caseNumber = caseNumber;
         this.caseName = newName;
         this.caseDescription = caseDescription;
         this.Dev = Dev;
@@ -40,7 +41,6 @@ public class Case {
             myWriter.write("--------------------\n");
 
             myWriter.close();
-            System.out.println("Successfully wrote the case to the file.");
 
         } catch (IOException e) {
 
@@ -48,4 +48,8 @@ public class Case {
             e.printStackTrace();
         }
     }
+    public int getCaseNumber() {
+        return caseNumber;
+    }
+
 }

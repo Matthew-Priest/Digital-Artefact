@@ -43,7 +43,13 @@ public class Artefact {
         String caseName;
         String caseDescription;
         String Dev;
+        int highestCaseNum = 0;
 
+        for(Case c : caseList) {
+            if(c.getCaseNumber() > highestCaseNum){
+                highestCaseNum = c.getCaseNumber();
+            }
+        }
         System.out.println("What should the case be called");
         caseName = scanner.nextLine();
 
@@ -53,9 +59,8 @@ public class Artefact {
         System.out.println("Who will be in charge of the case");
         Dev = scanner.nextLine();
 
-        Case newCase = new Case(caseName, caseDescription, Dev);
+        Case newCase = new Case(highestCaseNum + 1, caseName, caseDescription, Dev);
         caseList.add(newCase);
-        newCase.writeToFile();
     }
 
     public static void editCase(Scanner scanner) {
@@ -104,5 +109,6 @@ public class Artefact {
         for(int i=0; i<caseList.size(); i++){
             caseList.get(i).writeToFile();
         }
+        System.out.println("Successfully saved "+ caseList.size() +" cases");
     }
 }
