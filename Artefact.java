@@ -122,10 +122,10 @@ public class Artefact {
         }
     }
 
-    public static void closeCase(Scanner scanner, ArrayList<Case> caseList) {
+    public static void closeCase(Scanner scanner, ArrayList<Case> caseList) { //Add functionality to give a reason to why the case is being closed
         Case selectedCase = findCase(scanner, caseList);
         selectedCase.setCaseStatus(Status.closed);
-        
+
     }
 
     public static void viewCase(Scanner scanner, ArrayList<Case> caseList){
