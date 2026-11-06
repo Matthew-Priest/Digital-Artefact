@@ -11,21 +11,24 @@ public class Case {
     private int caseNumber;
     private LocalDate setDate;
     private String Dev;
+    private String status;
 
     //Constructor Overloading. One for creating an initial case from create method, other for creating a case that has been read from a txt file
-    public Case(int caseNumber, String newName, String caseDescription, String Dev) {
+    public Case(int caseNumber, String newName, String caseDescription, String Dev, String status) {
         this.caseNumber = caseNumber;
         this.caseName = newName;
         this.caseDescription = caseDescription;
         this.Dev = Dev;
         this.setDate = LocalDate.now();
+        this.status = status;
     }
 
-    public  Case(String caseNum, String caseName, String caseDescription, String Dev, String creationDate){
+    public  Case(String caseNum, String caseName, String caseDescription, String Dev, String creationDate, String status){
         this.caseName = caseName;
         this.caseDescription = caseDescription;
         this.Dev = Dev;
         this.setDate = LocalDate.parse(creationDate);
+        this.status = status;
         this.caseNumber = Integer.parseInt(caseNum);
     }
 
@@ -38,6 +41,7 @@ public class Case {
             myWriter.write("Description: " + caseDescription + "\n");
             myWriter.write("Developer: " + Dev + "\n");
             myWriter.write("Date Created: " + setDate + "\n");
+            myWriter.write("Status: "+ status + "\n");
             myWriter.write("--------------------\n");
 
             myWriter.close();
@@ -50,6 +54,9 @@ public class Case {
     }
     public int getCaseNumber() {
         return caseNumber;
+    }
+    public String getCaseTitle(){
+        return caseName;
     }
 
 }

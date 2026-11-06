@@ -21,10 +21,10 @@ public class Artefact {
                     createCase(scanner, caseList);
                     break;
                 case "edit":
-                    editCase(scanner);
+                    editCase(scanner, caseList);
                     break;
                 case "delete":
-                    deleteCase(scanner);
+                    deleteCase(scanner, caseList);
                     break;
                 default:
                     break;
@@ -43,6 +43,7 @@ public class Artefact {
         String caseName;
         String caseDescription;
         String Dev;
+        String status;
         int highestCaseNum = 0;
 
         for(Case c : caseList) {
@@ -59,21 +60,42 @@ public class Artefact {
         System.out.println("Who will be in charge of the case");
         Dev = scanner.nextLine();
 
-        Case newCase = new Case(highestCaseNum + 1, caseName, caseDescription, Dev);
+        System.out.println("What is the status of this case?");
+        status = scanner.nextLine();
+
+        Case newCase = new Case(highestCaseNum + 1, caseName, caseDescription, Dev, status);
         caseList.add(newCase);
     }
 
-    public static void editCase(Scanner scanner) {
+    public static void editCase(Scanner scanner, ArrayList<Case> caseList) {
+        System.out.println("Would you like to find your case through the case number or title");
+        String answer = scanner.nextLine().toLowerCase();
+        switch (answer) {
+            case "case number":
+                findCaseViaNumber(scanner, caseList);
+                break;
+            case "title":
+                findCaseViaTitle(scanner, caseList);
+                break;
+            default:
+                break;
+        }
+        answer = "";
+        while (!answer.equals("name") && !answer.equals("dev") && !answer.equals("description")) {
+            System.out.println("What part of the case would you like to edit?");
+            answer = scanner.nextLine().toLowerCase();
+        }
+        
 
     }
 
-    public static void deleteCase(Scanner scanner) {
+    public static void deleteCase(Scanner scanner, ArrayList<Case> caseList) {
 
     }
 
     public static ArrayList<Case> LoadCases() {
         ArrayList<Case> caseList = new ArrayList<Case>();
-        String[] fields = new String[5];
+        String[] fields = new String[6];
         int count = 0;
         String Value;
 
@@ -82,10 +104,10 @@ public class Artefact {
             String line;
             while ((line = br.readLine()) != null) {
                 if(line.equals("--------------------")){
-                    Case newCase = new Case(fields[0], fields[1], fields[2], fields[3], fields[4]);
+                    Case newCase = new Case(fields[0], fields[1], fields[2], fields[3], fields[4], fields[5]);
                     caseList.add(newCase);
                     count = 0;
-                    fields = new String[5]; //Validation so that if user leaves a box empty, info isn't being reused from past cases
+                    fields = new String[6]; //Validation so that if user leaves a box empty, info isn't being reused from past cases
                 }
                 else {
                     int startOfValue = line.indexOf(":");  
@@ -110,5 +132,25 @@ public class Artefact {
             caseList.get(i).writeToFile();
         }
         System.out.println("Successfully saved "+ caseList.size() +" cases");
+    }
+    public static Case findCaseViaNumber(Scanner scanner, ArrayList<Case> caseList){
+        System.out.println("What search phrase do you want to look for in the title?");
+        int answer = Integer.parseInt(scanner.nextLine());
+        for(Case c : caseList){
+            if(c.getCaseNumber() == answer){
+                return c;
+            }
+        }
+        return null;
+    }
+    public static Case findCaseViaTitle(Scanner scanner,  ArrayList<Case> caseList){
+        System.out.println("What search phrase do you want to look for in the title?");
+        String answer = scanner.nextLine();
+        for(Case c : caseList){
+             if(c.getCaseTitle().contains(answer)){
+                return c;
+            }
+        }
+        return null;
     }
 }
