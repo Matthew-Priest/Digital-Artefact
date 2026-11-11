@@ -89,7 +89,7 @@ public class Artefact {
         if(answer.equals("status")){
             System.out.println("Pick a status from these options");
             for(Status s : Status.values()){
-                System.out.println();
+                System.out.println(s);
             }
         }
 
@@ -111,10 +111,14 @@ public class Artefact {
                 selectedCase.setCaseDev(change);
                 break;
             case "status":
-                try {
-                    selectedCase.setCaseStatus(Status.valueOf(change));
-                } catch (IllegalArgumentException e) {
-                    System.out.println("That isn't a valid status, so nothing was changed."); //Validation so that program doesn't crash if the input doesn't match a value of Status
+                if(change.equals("closed")){
+                    System.out.println("Cannot close a case from this menu. To close a case, you must do it through the close case option and specify why");
+                } else {
+                    try {
+                        selectedCase.setCaseStatus(Status.valueOf(change));
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("That isn't a valid status, so nothing was changed."); //Validation so that program doesn't crash if the input doesn't match a value of Status
+                    }
                 }
                 break;        
             default:
@@ -124,33 +128,42 @@ public class Artefact {
 
     public static void closeCase(Scanner scanner, ArrayList<Case> caseList) { //Add functionality to give a reason to why the case is being closed
         Case selectedCase = findCase(scanner, caseList);
-        selectedCase.setCaseStatus(Status.closed);
-
+        if(selectedCase == null){
+            return;
+        }
+        String answer = "";
+        while(answer.equals("")){
+            System.out.println("Why is this case being closed?");
+            answer = scanner.nextLine().trim();
+        }
+        selectedCase.closeCase(answer);
+        System.out.println("Case " + selectedCase.getCaseNumber() + " closed.");
     }
 
     public static void viewCase(Scanner scanner, ArrayList<Case> caseList){
         Case selectedCase = findCase(scanner, caseList);
         if(selectedCase == null){
             System.out.println("No case found");
+            return;
         }
         System.out.println(selectedCase);
     }
 
     public static ArrayList<Case> LoadCases() {
         ArrayList<Case> caseList = new ArrayList<Case>();
-        String[] fields = new String[6];
+        String[] fields = new String[7];
         int count = 0;
-        String Value;
+        Case newCase;
 
         try (
             BufferedReader br = new BufferedReader(new FileReader("caseList.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 if(line.equals("--------------------")){
-                    Case newCase = new Case(fields[0], fields[1], fields[2], fields[3], fields[4], Status.valueOf(fields[5]));
+                    newCase = new Case(fields[0], fields[1], fields[2], fields[3], fields[4], Status.valueOf(fields[5]), fields[6]);
                     caseList.add(newCase);
                     count = 0;
-                    fields = new String[6]; //Validation so that if user leaves a box empty, info isn't being reused from past cases
+                    fields = new String[7]; //Validation so that if user leaves a box empty, info isn't being reused from past cases
                 }
                 else {
                     int startOfValue = line.indexOf(":");  
