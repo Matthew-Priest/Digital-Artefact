@@ -81,6 +81,9 @@ public class Case {
     public String getCaseTitle() {
         return caseName;
     }
+    public Status getStatus(){
+        return status;
+    }
     public void setCaseTitle(String title){
         this.caseName = title;
     }
@@ -93,5 +96,6 @@ public class Case {
     public void setCaseDev(String dev){
         this.Dev = dev;
     }
+
 
 }
