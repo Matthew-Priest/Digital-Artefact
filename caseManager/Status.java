@@ -1,3 +1,4 @@
+package caseManager;
 public enum Status {
     active,
     in_development,
